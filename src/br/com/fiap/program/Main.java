@@ -51,9 +51,11 @@ public class Main {
 		findService = serviceDao.read(findService.getId());
 		System.out.println(findService);
 		
-		serviceDao.delete(findService);
-		findService = serviceDao.read(findService.getId());
-		System.out.println(findService == null ? "Service has been removed" : "Service has not been removed");
+		if(confirm()) {
+			serviceDao.delete(findService);
+			findService = serviceDao.read(findService.getId());
+			System.out.println(findService == null ? "Service has been removed" : "Service has not been removed");
+		}
 		em.close();
 	}
 	
@@ -93,9 +95,11 @@ public class Main {
 		findItinerary = itineraryDao.read(itinerary.getItineraryId());
 		System.out.println(findItinerary);
 		
-		itineraryDao.delete(findItinerary);
-		findItinerary = itineraryDao.read(findItinerary.getItineraryId());
-		System.out.println(findItinerary == null ? "Itinerary has been removed" : "Itinerary has not been removed");
+		if(confirm()) {
+			itineraryDao.delete(findItinerary);
+			findItinerary = itineraryDao.read(findItinerary.getItineraryId());
+			System.out.println(findItinerary == null ? "Itinerary has been removed" : "Itinerary has not been removed");
+		}
 		em.close();
 	}
 	
@@ -148,10 +152,19 @@ public class Main {
 		orderDao.update(findOrder);
 		findOrder = orderDao.read(order.getId());
 		System.out.println(findOrder);
-
-		orderDao.delete(findOrder);
-		findOrder = orderDao.read(order.getId());
-		System.out.println(findOrder == null ? "Order has been removed" : "Order has not been removed");
+		
+		if(confirm()) {
+			orderDao.delete(findOrder);
+			findOrder = orderDao.read(order.getId());
+			System.out.println(findOrder == null ? "Order has been removed" : "Order has not been removed");
+		}
+		
 		em.close();
+	}
+	
+	private static boolean confirm() {
+		Object[] options = { "Sim", "Não" };
+		int input = JOptionPane.showOptionDialog(null, "Deseja remover os dados?", "Informação", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+		return input>0 ? false : true;
 	}
 }
